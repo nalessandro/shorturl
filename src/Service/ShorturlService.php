@@ -17,12 +17,20 @@ class ShorturlService
         $this->rep = $this->em->getRepository(Urlmatrix::class);
     }
 
-    public function shorten(String $url) 
+    public function shorten(String $url) : string
     {
+
         $result = $this->generateShort($url);
         $this->save($url, $result);
         
         return $result;
+    }
+
+    public function lengthen(String $url): string
+    {
+        $result = $this->rep->findBy(['short' => $url]);
+
+        return $result[0]->getUrl();
     }
 
     protected function generateShort(): string
