@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: ./.environment
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/var/www/html
+      - ./.environment/vhost:/etc/apache2/sites-enabled
+    ports: 
+      - 80:80
+    links:
+      - db
+  
+  db:
+    image: mysql:5.7
+    volumes:
+      - ./.environment/db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=Password
+      - explicit_defaults_for_timestamp
+    ports:
+      - 3306:3306
